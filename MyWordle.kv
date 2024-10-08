@@ -1,0 +1,110 @@
+ScreenManager:
+    StartScreen:
+        name: 'Start'
+        BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: (0.8, 0.8, 0.85, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            padding: (80,180)
+            orientation: 'vertical'
+            Label:
+                text: 'Welcome to Wordle! by Damla'
+                font_size: 90
+                font_name: 'BebasNeue-Regular'
+                size_hint: 1, 1
+                pos: '200dp', '300dp'
+                color: 0.3, 0.4, 1, 0.9
+            Label:
+                text: "Number of Letters: " + str(sld.value)
+                font_size: 35
+                size_hint_y: 0.5
+                color: 33/255, 37/255, 41/255, 1
+
+            Slider:
+                id: sld
+                size_hint_y: 0.3
+                max: 8
+                min: 4
+                step: 1
+                value: 5
+
+            Button:
+                size_hint: 0.6, 0.4
+                pos_hint: {'center_x': 0.5, 'center_y': 1}
+                text: 'START'
+                background_color: 0.5, 0.5, 1, 1
+                on_release:
+                    app.root.current = "Main"
+                    root.get_screen('Main').StartGame(inp, sld.value)
+
+    MainScreen:
+        name: 'Main'
+        MainLayout:
+            canvas.before:
+                Color:
+                    rgba: (0.8, 0.8, 0.85, 1)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            padding: (40,35)
+            orientation: 'vertical'
+            Label:
+                size_hint_y: 2
+                text: 'Wordle'
+                font_size: 40
+                font_name: 'BebasNeue-Regular'
+                color: 0.3, 0.4, 1, 0.9
+            BoxLayout:
+                size_hint_y: 8
+                InputScreen:
+                    id : inp
+                    orientation: 'vertical'
+                    padding: '10dp'
+                    spacing: '10dp'
+                RemainingLetters:
+                    id : letterlist
+                    padding: "30dp", "0dp", "20dp", "50dp"
+                    size_hint_x: 0.8
+            BoxLayout:
+                size_hint_y: 2
+                padding: (80,35)
+                orientation: 'horizontal'
+                Label:
+                    id: mainlbl
+                    text : inp.messageproperty
+                    color: 33/255, 37/255, 41/255, 1
+                Button:
+                    size_hint_x: 0.3
+                    text: 'Check Word'
+                    on_release:
+                        inp.check(letterlist)
+                Button:
+                    size_hint_x: 0.3
+                    background_color: 0.38, 0.47, 0.72, 1
+                    text: 'Play Again'
+                    on_release:
+                        root.get_screen('Main').ResetGame(inp)
+                        letterlist.reset()
+                        app.root.current = "Start"
+
+
+
+
+
+<MyLetterInput>
+    multiline: False
+    font_size: self.height / 2
+    text_size: self.width, self.height
+    halign : 'center'
+    valign : "center"
+    padding : [0, (self.height - self.line_height) / 2]
+
+<MyLineInput>
+    spacing: '20dp'
+    size_hint_y: root.boxheight
+    padding: 0,0,0,0
+
+
